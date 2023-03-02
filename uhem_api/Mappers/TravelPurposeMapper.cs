@@ -21,7 +21,17 @@ namespace uhem_api.Mappers
             }
 
             return l;
-        } 
+        }
+        public static TravelPurposeDto MapToTravelPurposeDto(MySqlDataReader data)
+        {
+            TravelPurposeDto t = new TravelPurposeDto();
 
+            while (data.Read())
+            {
+                t.IdTravelPurpose = data.GetInt32("id_travel_purpose");
+                t.DescriptionTravelPurpose = data.GetString("description_travel_purpose");
+            }
+            return t;
+        }
     }
 }

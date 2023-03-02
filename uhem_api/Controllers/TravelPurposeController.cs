@@ -21,7 +21,21 @@ namespace uhem_api.Controllers
         public async Task<List<TravelPurposeDto>> GetAll()
         {
             var res = await _travelPurposeService.GetAll();
+            return res;
+        }
 
+        [HttpGet]
+        [Route("id")]
+        public async Task<TravelPurposeDto> GetById(int id)
+        {
+            var res = await _travelPurposeService.GetById(id);
+            return res;
+        }
+
+        [HttpPost]
+        public async Task<bool> Post(TravelPurposeDto data)
+        {
+            var res = await _travelPurposeService.Post(data);
             return res;
         }
 

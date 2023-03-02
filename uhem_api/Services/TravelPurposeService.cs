@@ -7,39 +7,58 @@ namespace uhem_api.Services
 {
     public class TravelPurposeService : ITravelPurposeService
     {
-        MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
-        MySqlConnection con = new MySqlConnection();
-
         private readonly ITravelPurposeRepository _travelPurposeRepository;
 
         public TravelPurposeService(ITravelPurposeRepository travelPurposeRepository) {
 
             _travelPurposeRepository = travelPurposeRepository;
-
-            builder = new MySqlConnectionStringBuilder
-            {
-                Server = "localhost",
-                UserID = "root",
-                Password = ".XfeJX0T8.GLINTT",
-                Database = "uhem",
-            };
-
-            con = new MySqlConnection(builder.ConnectionString);
         }
 
         public async Task<List<TravelPurposeDto>> GetAll()
         {
             try
             {
-
-                var res = await _travelPurposeRepository.GetAll(con);
-
-                return res;
-
+                using (MySqlConnection con = SQLConnection.Connect())
+                {
+                    var res = await _travelPurposeRepository.GetAll(con);
+                    return res;
+                }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.ToString());
+            }
+        }
+
+        public async Task<TravelPurposeDto> GetById(int id)
+        {
+            try
+            {
+                using (MySqlConnection con = SQLConnection.Connect())
+                {
+                    var res = await _travelPurposeRepository.GetById(con, id);
+                    return res;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new System.Exception(e.ToString());
+            }
+        }
+
+        public async Task<bool> Post(TravelPurposeDto data)
+        {
+            try
+            {
+                using (MySqlConnection con = SQLConnection.Connect())
+                {
+                    var res = await _travelPurposeRepository.Post(con, data);
+                    return res;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new System.Exception(e.ToString());
             }
         }
 
