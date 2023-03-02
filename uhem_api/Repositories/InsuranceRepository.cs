@@ -94,5 +94,26 @@ namespace uhem_api.Repositories
                 throw new Exception(e.ToString());
             }
         }
+
+        public async Task<bool> Delete(MySqlConnection con, int id)
+        {
+            try
+            {
+                await con.OpenAsync();
+
+                var command = con.CreateCommand();
+                command.CommandText = "DELETE FROM UHEM.UHEM_INSURANCE WHERE id_insurance = @id;";
+                command.Parameters.AddWithValue("@id", id);
+
+                var res = await command.ExecuteReaderAsync();
+
+                return res != null ? true : false;
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
     }
 }

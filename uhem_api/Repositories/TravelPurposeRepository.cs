@@ -77,5 +77,26 @@ namespace uhem_api.Repositories
             }
         }
 
+        public async Task<bool> Delete(MySqlConnection con, int id)
+        {
+            try
+            {
+                await con.OpenAsync();
+
+                var command = con.CreateCommand();
+                command.CommandText = "DELETE FROM UHEM.UHEM_TRAVEL_PURPOSE WHERE id_travel_purpose = @id;";
+                command.Parameters.AddWithValue("@id", id);
+
+                var res = await command.ExecuteReaderAsync();
+
+                return res != null ? true : false;
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
     }
 }

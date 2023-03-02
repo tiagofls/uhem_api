@@ -75,5 +75,21 @@ namespace uhem_api.Services
                 throw new System.Exception(ex.ToString());
             }
         }
+
+        public async Task<bool> Delete(int id)
+        {
+            try
+            {
+                using (MySqlConnection con = SQLConnection.Connect())
+                {
+                    var res = await _insuranceRepository.Delete(con, id);
+                    return res;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new System.Exception(e.ToString());
+            }
+        }
     }
 }
