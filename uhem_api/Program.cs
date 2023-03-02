@@ -1,4 +1,5 @@
 using uhem_api.Interfaces.Repositories;
+using uhem_api.Interfaces.Repository;
 using uhem_api.Interfaces.Service;
 using uhem_api.Repositories;
 using uhem_api.Services;
@@ -13,6 +14,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ITravelPurposeService, TravelPurposeService>();
 builder.Services.AddScoped<ITravelPurposeRepository, TravelPurposeRepository>();
+
+builder.Services.AddScoped<IInsuranceService, InsuranceService>();
+builder.Services.AddScoped<IInsuranceRepository, InsuranceRepository>();
 
 var app = builder.Build();
 

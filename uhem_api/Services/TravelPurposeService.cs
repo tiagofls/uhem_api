@@ -62,5 +62,21 @@ namespace uhem_api.Services
             }
         }
 
+        public async Task<bool> Delete(int id)
+        {
+            try
+            {
+                using (MySqlConnection con = SQLConnection.Connect())
+                {
+                    var res = await _travelPurposeRepository.Delete(con, id);
+                    return res;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new System.Exception(e.ToString());
+            }
+        }
+
     }
 }

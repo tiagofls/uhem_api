@@ -39,5 +39,12 @@ namespace uhem_api.Controllers
             return res;
         }
 
+        [HttpDelete]
+        public async Task<bool> Delete(int id)
+        {
+            var res = await _travelPurposeService.Delete(id);
+            return res;
+        }
+
     }
 }

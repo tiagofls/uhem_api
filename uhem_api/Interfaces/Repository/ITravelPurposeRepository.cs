@@ -8,5 +8,6 @@ namespace uhem_api.Interfaces.Repositories
         Task<List<TravelPurposeDto>> GetAll(MySqlConnection con);
         Task<TravelPurposeDto> GetById(MySqlConnection con, int id);
         Task<bool> Post(MySqlConnection con, TravelPurposeDto data);
+        Task<bool> Delete(MySqlConnection con, int id);
     }
 }

@@ -7,5 +7,6 @@ namespace uhem_api.Interfaces.Service
         Task<List<TravelPurposeDto>> GetAll();
         Task<TravelPurposeDto> GetById(int id);
         Task<bool> Post(TravelPurposeDto data);
+        Task<bool> Delete(int id);
     }
 }
