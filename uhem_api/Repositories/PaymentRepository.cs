@@ -5,14 +5,11 @@ using uhem_api.Mappers;
 
 namespace uhem_api.Repositories
 {
-    public class TravelPurposeRepository : ITravelPurposeRepository
+    public class PaymentRepository : IPaymentRepository
     {
+        public PaymentRepository() : base() { }
 
-        public TravelPurposeRepository() : base()
-        {
-        }
-
-        public async Task<List<TravelPurposeDto>> GetAll(MySqlConnection con)
+        public async Task<List<PaymentDto>> GetAll(MySqlConnection con)
         {
             try
             {
@@ -20,14 +17,15 @@ namespace uhem_api.Repositories
                 await con.OpenAsync();
 
                 var command = con.CreateCommand();
-                command.CommandText = "SELECT * FROM uhem.uhem_travel_purpose;";
+                command.CommandText = "SELECT * FROM uhem.uhem_payment;";
 
                 var res = await command.ExecuteReaderAsync();
 
-                return TravelPurposeMapper.MapManyToTravelPurposeDto(res);
+                return PaymentMapper.MapManyToPaymentDto(res);
 
             }
-            catch(Exception e) {
+            catch (Exception e)
+            {
                 throw new Exception(e.ToString());
             }
         }

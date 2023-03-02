@@ -1,4 +1,5 @@
-using uhem_api.Interfaces;
+using uhem_api.Interfaces.Repositories;
+using uhem_api.Interfaces.Service;
 using uhem_api.Repositories;
 using uhem_api.Services;
 

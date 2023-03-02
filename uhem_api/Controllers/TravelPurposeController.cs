@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 using uhem_api.Dto;
-using uhem_api.Interfaces;
+using uhem_api.Interfaces.Service;
 
 namespace uhem_api.Controllers
 {
