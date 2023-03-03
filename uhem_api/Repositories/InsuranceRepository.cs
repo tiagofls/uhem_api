@@ -105,7 +105,7 @@ namespace uhem_api.Repositories
                 command.CommandText = "DELETE FROM UHEM.UHEM_INSURANCE WHERE id_insurance = @id;";
                 command.Parameters.AddWithValue("@id", id);
 
-                var resw = await command.ExecuteReaderAsync();
+                var res = await command.ExecuteReaderAsync();
 
                 return res != null ? true : false;
 
