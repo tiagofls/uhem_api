@@ -100,7 +100,6 @@ namespace uhem_api.Repositories
             try
             {
                 await con.OpenAsync();
-                string cenas = "";
                 var command = con.CreateCommand();
                 command.CommandText = "DELETE FROM UHEM.UHEM_INSURANCE WHERE id_insurance = @id;";
                 command.Parameters.AddWithValue("@id", id);
