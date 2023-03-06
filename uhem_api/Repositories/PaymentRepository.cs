@@ -13,7 +13,6 @@ namespace uhem_api.Repositories
         {
             try
             {
-
                 await con.OpenAsync();
 
                 var command = con.CreateCommand();
@@ -22,7 +21,6 @@ namespace uhem_api.Repositories
                 var res = await command.ExecuteReaderAsync();
 
                 return PaymentMapper.MapManyToPaymentDto(res);
-
             }
             catch (Exception e)
             {
