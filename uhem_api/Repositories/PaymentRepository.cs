@@ -19,7 +19,6 @@ namespace uhem_api.Repositories
                 command.CommandText = "SELECT * FROM uhem.uhem_payment;";
 
                 var res = await command.ExecuteReaderAsync();
-
                 return PaymentMapper.MapManyToPaymentDto(res);
             }
             catch (Exception e)
