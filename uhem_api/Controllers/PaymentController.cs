@@ -4,7 +4,9 @@ using uhem_api.Interfaces.Service;
 
 namespace uhem_api.Controllers
 {
-    public class PaymentController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class PaymentController : ControllerBase
     {
         private readonly IPaymentService _paymentService;
         public PaymentController(IPaymentService paymentService)
@@ -16,6 +18,19 @@ namespace uhem_api.Controllers
         public async Task<List<PaymentDto>> GetAll()
         {
             return await _paymentService.GetAll();
+        }
+
+        [HttpGet]
+        [Route("id")]
+        public async Task<PaymentDto> GetPaymentById(int id)
+        {
+            return await _paymentService.GetPaymentById(id);
+        }
+
+        [HttpPost]
+        public async Task<bool> Post(PaymentDto data)
+        {
+            return await _paymentService.Post(data);
         }
     }
 }

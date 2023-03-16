@@ -26,7 +26,7 @@ namespace uhem_api.Mappers
         {
             TravelPurposeDto t = new TravelPurposeDto();
 
-            while (data.Read())
+            if (data.Read())
             {
                 t.IdTravelPurpose = data.GetInt32("id_travel_purpose");
                 t.DescriptionTravelPurpose = data.GetString("description_travel_purpose");
