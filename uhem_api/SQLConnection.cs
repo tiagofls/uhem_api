@@ -15,7 +15,7 @@ namespace uhem_api
             {
                 Server = "localhost",
                 UserID = "root",
-                Password = ".XfeJX0T8.GLINTT",
+                Password = "" /*".XfeJX0T8.GLINTT"*/,
                 Database = "uhem",
             };
 

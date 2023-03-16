@@ -14,15 +14,26 @@ namespace uhem_api.Mappers
                 PaymentDto t = new PaymentDto
                 {
                     IdPayment = data.GetInt32("id_payment"),
-                    InsurancePercent = data.GetInt32("insurance_percent"),
-                    Paid = data.GetBoolean("paid"),
-                    SocialSecurityPercent = data.GetInt32("social_security_percent")
+                    Paid = data.GetInt32("paid"),
+                    Amount = data.GetDouble("amount")
                 };
 
                 l.Add(t);
             }
 
             return l;
+        }
+
+        public static PaymentDto MapToPaymentDto(MySqlDataReader data)
+        {
+            PaymentDto t = new PaymentDto
+                {
+                    IdPayment = data.GetInt32("id_payment"),
+                    Paid = data.GetInt32("paid"),
+                    Amount = data.GetDouble("amount")
+                };
+
+            return t;
         }
     }
 }

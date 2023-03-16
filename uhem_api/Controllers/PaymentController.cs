@@ -4,7 +4,9 @@ using uhem_api.Interfaces.Service;
 
 namespace uhem_api.Controllers
 {
-    public class PaymentController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class PaymentController : ControllerBase
     {
         private readonly IPaymentService _paymentService;
         public PaymentController(IPaymentService paymentService)
