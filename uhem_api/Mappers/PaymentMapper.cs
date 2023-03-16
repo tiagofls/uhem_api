@@ -26,12 +26,14 @@ namespace uhem_api.Mappers
 
         public static PaymentDto MapToPaymentDto(MySqlDataReader data)
         {
-            PaymentDto t = new PaymentDto
-                {
-                    IdPayment = data.GetInt32("id_payment"),
-                    Paid = data.GetInt32("paid"),
-                    Amount = data.GetDouble("amount")
-                };
+            PaymentDto t = new PaymentDto();
+
+            if (data.Read())
+            {
+                t.IdPayment = data.GetInt32("id_payment");
+                t.Paid = data.GetInt32("paid");
+                t.Amount = data.GetDouble("amount");
+            }
 
             return t;
         }

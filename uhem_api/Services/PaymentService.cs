@@ -23,5 +23,23 @@ namespace uhem_api.Services
                 return res;
             }
         }
+
+        public async Task<PaymentDto> GetPaymentById(int id)
+        {
+            using (MySqlConnection con = SQLConnection.Connect())
+            {
+                var res = await _paymentRepository.GetPaymentById(con, id);
+                return res;
+            }
+        }
+
+        public async Task<bool> Post(PaymentDto data)
+        {
+            using (MySqlConnection con = SQLConnection.Connect())
+            {
+                var res = await _paymentRepository.Post(con, data);
+                return res;
+            }
+        }
     }
 }

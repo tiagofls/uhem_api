@@ -28,5 +28,46 @@ namespace uhem_api.Repositories
             }
         }
 
+        public async Task<PaymentDto> GetPaymentById(MySqlConnection con, int id)
+        {
+            try
+            {
+                await con.OpenAsync();
+
+                var command = con.CreateCommand();
+                command.CommandText = "SELECT * FROM uhem.uhem_payment WHERE id_payment = @id;";
+                command.Parameters.AddWithValue("@id", id);
+
+                var res = await command.ExecuteReaderAsync();
+
+                return PaymentMapper.MapToPaymentDto(res);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+        public async Task<bool> Post(MySqlConnection con, PaymentDto data)
+        {
+            try
+            {
+                await con.OpenAsync();
+
+                var command = con.CreateCommand();
+                command.CommandText = "INSERT INTO `uhem`.`uhem_payment` (`paid`, `amount`) VALUES (@paid, @amount);";
+                command.Parameters.AddWithValue("@paid", data.Paid);
+                command.Parameters.AddWithValue("@amount", data.Amount);
+
+                var res = await command.ExecuteReaderAsync();
+
+                return res != null ? true : false;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
     }
 }

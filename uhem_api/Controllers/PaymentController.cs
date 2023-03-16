@@ -19,5 +19,18 @@ namespace uhem_api.Controllers
         {
             return await _paymentService.GetAll();
         }
+
+        [HttpGet]
+        [Route("id")]
+        public async Task<PaymentDto> GetPaymentById(int id)
+        {
+            return await _paymentService.GetPaymentById(id);
+        }
+
+        [HttpPost]
+        public async Task<bool> Post(PaymentDto data)
+        {
+            return await _paymentService.Post(data);
+        }
     }
 }
