@@ -17,6 +17,9 @@ builder.Services.AddScoped<ITravelPurposeRepository, TravelPurposeRepository>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
+builder.Services.AddScoped<ICaregiverService, CaregiverService>();
+builder.Services.AddScoped<ICaregiverRepository, CaregiverRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
