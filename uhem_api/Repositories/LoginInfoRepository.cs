@@ -39,32 +39,12 @@ namespace uhem_api.Repositories
             {
                 await con.OpenAsync();
 
-                byte[] salt = RandomNumberGenerator.GetBytes(keySize);
-
-                var command12 = con.CreateCommand();
-                command12.CommandText = "INSERT INTO UHEM.UHEM_SALT (username, salt) VALUES (@id, @salt);";
-                command12.Parameters.AddWithValue("@id", data.Username);
-                command12.Parameters.AddWithValue("@salt", salt);
-
-                var res = await command12.ExecuteReaderAsync();
-
-                var hash = Rfc2898DeriveBytes.Pbkdf2(
-                    Encoding.UTF8.GetBytes(data.EncryptedPassword),
-                    salt,
-                    iterations,
-                    hashAlgorithm,
-                    keySize);
-                var password = Convert.ToHexString(hash);
-
-                await con.CloseAsync();
-                await con.OpenAsync();
-
                 var command = con.CreateCommand();
                 command.CommandText = "INSERT INTO `uhem`.`uhem_login_info` (`username`, `encrypted_password`) VALUES (@username, @pwd);";
                 command.Parameters.AddWithValue("@username", data.Username);
-                command.Parameters.AddWithValue("@pwd", password);
+                command.Parameters.AddWithValue("@pwd", data.EncryptedPassword);
 
-                var res22 = await command.ExecuteReaderAsync();
+                var res = await command.ExecuteReaderAsync();
 
                 await con.CloseAsync();
                 await con.OpenAsync();
@@ -98,23 +78,11 @@ namespace uhem_api.Repositories
 
                 var res = await command.ExecuteReaderAsync();
 
-                var pwd_hash = LoginInfoMapper.MapToLoginInfoDto(res).EncryptedPassword;
+                var pwd = LoginInfoMapper.MapToLoginInfoDto(res).EncryptedPassword;
 
-                await con.CloseAsync();
-                await con.OpenAsync();
-                var command2 = con.CreateCommand();
-                command2.CommandText = "SELECT * FROM uhem.uhem_salt where username = @user;";
-                command2.Parameters.AddWithValue("@user", username);
+                if(password == pwd) return true;
 
-                var res2 = await command2.ExecuteReaderAsync();
-
-                var mysalt = SaltMapper.MapToSaltDto(res2).Salt;
-      
-                var hashToCompare = Rfc2898DeriveBytes.Pbkdf2(password, Encoding.ASCII.GetBytes(mysalt), iterations, hashAlgorithm, keySize);
-
-                var pos = hashToCompare.SequenceEqual(Convert.FromHexString(pwd_hash));
-
-                return pos ? true : false;
+                return false;
 
             }
             catch (Exception e)
