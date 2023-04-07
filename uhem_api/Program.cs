@@ -1,4 +1,5 @@
 using uhem_api.Interfaces.Repositories;
+using uhem_api.Interfaces.Repository;
 using uhem_api.Interfaces.Service;
 using uhem_api.Repositories;
 using uhem_api.Services;
@@ -19,6 +20,9 @@ builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
 builder.Services.AddScoped<ICaregiverService, CaregiverService>();
 builder.Services.AddScoped<ICaregiverRepository, CaregiverRepository>();
+
+builder.Services.AddScoped<ILoginInfoService, LoginInfoService>();
+builder.Services.AddScoped<ILoginInfoRepository, LoginInfoRepository>();
 
 var app = builder.Build();
 
