@@ -39,10 +39,26 @@ namespace uhem_api.Repositories
             {
                 await con.OpenAsync();
 
+                var sha = new System.Security.Cryptography.SHA256Managed();
+
+                // Convert the string to a byte array first, to be processed
+                byte[] textBytes = System.Text.Encoding.UTF8.GetBytes(data.EncryptedPassword + data.Username);
+                byte[] hashBytes = sha.ComputeHash(textBytes);
+
+                // Convert back to a string, removing the '-' that BitConverter adds
+                string hash = BitConverter
+                    .ToString(hashBytes)
+                    .Replace("-", System.String.Empty);
+
+
+                await con.CloseAsync();
+
+                await con.OpenAsync();
+
                 var command = con.CreateCommand();
                 command.CommandText = "INSERT INTO `uhem`.`uhem_login_info` (`username`, `encrypted_password`) VALUES (@username, @pwd);";
                 command.Parameters.AddWithValue("@username", data.Username);
-                command.Parameters.AddWithValue("@pwd", data.EncryptedPassword);
+                command.Parameters.AddWithValue("@pwd", hash);
 
                 var res = await command.ExecuteReaderAsync();
 
@@ -78,9 +94,20 @@ namespace uhem_api.Repositories
 
                 var res = await command.ExecuteReaderAsync();
 
-                var pwd = LoginInfoMapper.MapToLoginInfoDto(res).EncryptedPassword;
+                var obj = LoginInfoMapper.MapToLoginInfoDto(res);
 
-                if(password == pwd) return true;
+                var sha = new System.Security.Cryptography.SHA256Managed();
+
+                // Convert the string to a byte array first, to be processed
+                byte[] textBytes = System.Text.Encoding.UTF8.GetBytes(password + username);
+                byte[] hashBytes = sha.ComputeHash(textBytes);
+
+                // Convert back to a string, removing the '-' that BitConverter adds
+                string hash = BitConverter
+                    .ToString(hashBytes)
+                    .Replace("-", System.String.Empty);
+
+                if (obj.EncryptedPassword == hash) return true;
 
                 return false;
 
