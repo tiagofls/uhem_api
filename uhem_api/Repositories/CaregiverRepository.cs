@@ -55,13 +55,13 @@ namespace uhem_api.Repositories
                 await con.OpenAsync();
 
                 var command = con.CreateCommand();
-                command.CommandText = "INSERT INTO `uhem`.`uhem_caregiver` (`name_caregiver`, `email_caregiver`, `phone_caregiver`, `address_caregiver`, `zipcode_caregiver`) " +
+                command.CommandText = "INSERT INTO `uhem`.`uhem_caregiver` (`name`, `email`, `phone`, `address`, `zipcode`) " +
                     "VALUES (@nome, @email, @tel, @add, @zip);";
-                command.Parameters.AddWithValue("@nome", data.NameCaregiver);
-                command.Parameters.AddWithValue("@email", data.EmailCaregiver);
-                command.Parameters.AddWithValue("@tel", data.PhoneCaregiver);
-                command.Parameters.AddWithValue("@add", data.AddressCaregiver);
-                command.Parameters.AddWithValue("@zip", data.ZipcodeCaregiver);
+                command.Parameters.AddWithValue("@nome", data.Name);
+                command.Parameters.AddWithValue("@email", data.Email);
+                command.Parameters.AddWithValue("@tel", data.Phone);
+                command.Parameters.AddWithValue("@add", data.Address);
+                command.Parameters.AddWithValue("@zip", data.Zipcode);
 
                 var res = await command.ExecuteReaderAsync();
 

@@ -7,19 +7,19 @@ namespace uhem_api.Dto
         [JsonPropertyName("id_caregiver")]
         public int? IdCaregiver { get; set; }
 
-        [JsonPropertyName("name_caregiver")]
-        public string? NameCaregiver { get; set; }
+        [JsonPropertyName("name")]
+        public string? Name { get; set; }
 
-        [JsonPropertyName("email_caregiver")]
-        public string? EmailCaregiver { get; set; }
+        [JsonPropertyName("email")]
+        public string? Email { get; set; }
 
-        [JsonPropertyName("phone_caregiver")]
-        public string? PhoneCaregiver { get; set; }
+        [JsonPropertyName("phone")]
+        public string? Phone { get; set; }
 
-        [JsonPropertyName("address_caregiver")]
-        public string? AddressCaregiver { get; set; }
+        [JsonPropertyName("address")]
+        public string? Address { get; set; }
 
-        [JsonPropertyName("zipcode_caregiver")]
-        public string? ZipcodeCaregiver { get; set; }
+        [JsonPropertyName("zipcode")]
+        public string? Zipcode { get; set; }
     }
 }

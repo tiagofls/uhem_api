@@ -14,7 +14,7 @@ namespace uhem_api.Mappers
             {
                 TravelPurposeDto t = new TravelPurposeDto {
                     IdTravelPurpose = data.GetInt32("id_travel_purpose"),
-                    DescriptionTravelPurpose = data.GetString("description_travel_purpose")
+                    Description = data.GetString("description")
                 };
 
                 l.Add(t);
@@ -29,7 +29,7 @@ namespace uhem_api.Mappers
             if (data.Read())
             {
                 t.IdTravelPurpose = data.GetInt32("id_travel_purpose");
-                t.DescriptionTravelPurpose = data.GetString("description_travel_purpose");
+                t.Description = data.GetString("description");
             }
             return t;
         }

@@ -58,12 +58,12 @@ namespace uhem_api.Repositories
         {
             try
             {
-                string desc = data.DescriptionTravelPurpose;
+                string desc = data.Description;
 
                 await con.OpenAsync();
 
                 var command = con.CreateCommand();
-                command.CommandText = "INSERT INTO UHEM.UHEM_TRAVEL_PURPOSE (description_travel_purpose) VALUES (@desc);";
+                command.CommandText = "INSERT INTO UHEM.UHEM_TRAVEL_PURPOSE (description) VALUES (@desc);";
                 command.Parameters.AddWithValue("@desc", desc);
 
                 var res = await command.ExecuteReaderAsync();

@@ -13,12 +13,12 @@ namespace uhem_api.Mappers
             {
                 CaregiverDto t = new CaregiverDto
                 {
-                    AddressCaregiver = data.GetString("address_caregiver"),
-                    EmailCaregiver = data.GetString("email_caregiver"),
+                    Address = data.GetString("address"),
+                    Email = data.GetString("email"),
                     IdCaregiver = data.GetInt32("id_caregiver"),
-                    NameCaregiver = data.GetString("name_caregiver"),
-                    PhoneCaregiver = data.GetString("phone_caregiver"),
-                    ZipcodeCaregiver = data.GetString("zipcode_caregiver"),
+                    Name = data.GetString("name"),
+                    Phone = data.GetString("phone"),
+                    Zipcode = data.GetString("zipcode"),
                 };
 
                 l.Add(t);
@@ -33,12 +33,12 @@ namespace uhem_api.Mappers
 
             if (data.Read())
             {
-                t.AddressCaregiver = data.GetString("address_caregiver");
-                t.EmailCaregiver = data.GetString("email_caregiver");
+                t.Address = data.GetString("address");
+                t.Email = data.GetString("email");
                 t.IdCaregiver = data.GetInt32("id_caregiver");
-                t.NameCaregiver = data.GetString("name_caregiver");
-                t.PhoneCaregiver = data.GetString("phone_caregiver");
-                t.ZipcodeCaregiver = data.GetString("zipcode_caregiver");
+                t.Name = data.GetString("name");
+                t.Phone = data.GetString("phone");
+                t.Zipcode = data.GetString("zipcode");
             }
 
             return t;

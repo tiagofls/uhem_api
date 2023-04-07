@@ -9,8 +9,8 @@ namespace uhem_api.Dto
         public int? IdTravelPurpose { get; set;}
 
         
-        [JsonPropertyName("description_travel_purpose")]
-        public string? DescriptionTravelPurpose { get; set; }
+        [JsonPropertyName("description")]
+        public string? Description { get; set; }
 
     }
 }
