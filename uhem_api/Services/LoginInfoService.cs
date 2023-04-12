@@ -27,21 +27,21 @@ namespace uhem_api.Services
             }
         }
 
-        public async Task<bool> Post(LoginInfoDto data)
+        public async Task<bool> Post(LoginInfoDto data, string flag)
         {
             using (MySqlConnection con = SQLConnection.Connect())
             {
-                var res = await _loginInfoRepository.Post(con, data);
+                var res = await _loginInfoRepository.Post(con, data, flag);
 
                 return res;
             }
         }
 
-        public async Task<bool> VerifyPassword(string username, string password)
+        public async Task<bool> VerifyPassword(string sns, string password, string flag)
         {
             using (MySqlConnection con = SQLConnection.Connect())
             {
-                var res = await _loginInfoRepository.VerifyPassword(con, username, password);
+                var res = await _loginInfoRepository.VerifyPassword(con, sns, password, flag);
 
                 return res;
             }

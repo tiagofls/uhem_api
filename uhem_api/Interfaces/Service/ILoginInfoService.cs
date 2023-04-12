@@ -5,7 +5,7 @@ namespace uhem_api.Interfaces.Service
     public interface ILoginInfoService
     {
         Task<List<LoginInfoDto>> GetAll();
-        Task<bool> Post(LoginInfoDto data);
-        Task<bool> VerifyPassword(string username, string password);
+        Task<bool> Post(LoginInfoDto data, string flag);
+        Task<bool> VerifyPassword(string sns, string password, string flag);
     }
 }

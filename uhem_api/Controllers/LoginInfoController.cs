@@ -21,16 +21,16 @@ namespace uhem_api.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> Post(LoginInfoDto data)
+        public async Task<bool> Post(LoginInfoDto data, string flag)
         {
-            return await _loginInfoService.Post(data);
+            return await _loginInfoService.Post(data, flag);
         }
 
         [HttpGet]
         [Route("verify_pwd")]
-        public async Task<bool> VerifyPassword(string username, string password)
+        public async Task<bool> VerifyPassword(string sns, string password, string flag)
         {
-            return await _loginInfoService.VerifyPassword(username, password);
+            return await _loginInfoService.VerifyPassword(sns, password, flag);
         }
     }
 }

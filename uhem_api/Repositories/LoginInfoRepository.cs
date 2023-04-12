@@ -33,7 +33,7 @@ namespace uhem_api.Repositories
             }
          }
 
-        public async Task<bool> Post(MySqlConnection con, LoginInfoDto data)
+        public async Task<bool> Post(MySqlConnection con, LoginInfoDto data, string flag)
         {
             try
             {
@@ -67,7 +67,14 @@ namespace uhem_api.Repositories
 
                 var command2 = con.CreateCommand();
 
-                command2.CommandText = "INSERT INTO `uhem`.`uhem_health_facility` (`email`) VALUES (@username);";
+                if(flag == "USER")
+                {
+                    command2.CommandText = "INSERT INTO `uhem`.`uhem_patient` (`email`) VALUES (@username);";
+                }
+                else
+                {
+                    command2.CommandText = "INSERT INTO `uhem`.`uhem_health_facility` (`email`) VALUES (@username);";
+                }
                 command2.Parameters.AddWithValue("@username", data.Username);
 
                 res = await command2.ExecuteReaderAsync();
@@ -81,11 +88,25 @@ namespace uhem_api.Repositories
             }
         }
 
-        public async Task<bool> VerifyPassword(MySqlConnection con, string username, string password)
+        public async Task<bool> VerifyPassword(MySqlConnection con, string sns, string password, string flag)
         {
             try
             {
-                
+                await con.OpenAsync();
+
+                string username;
+
+                var command42 = con.CreateCommand();
+                command42.CommandText = "SELECT * FROM uhem.uhem_patient WHERE sns = @sns;";
+                command42.Parameters.AddWithValue("@sns", sns);
+
+                var res42 = await command42.ExecuteReaderAsync();
+
+                username = PatientMapper.MapToPatientDto(res42).Email;
+
+                await con.CloseAsync();
+
+
                 await con.OpenAsync();
 
                 var command = con.CreateCommand();
@@ -121,29 +142,7 @@ namespace uhem_api.Repositories
         const int keySize = 64;
         const int iterations = 350000;
         HashAlgorithmName hashAlgorithm = HashAlgorithmName.SHA512;
-        public async Task<string> HashPasword(MySqlConnection c, string password, string id)
-        {
-            byte[] salt = RandomNumberGenerator.GetBytes(keySize);
-
-            await c.OpenAsync();
-
-            var command = c.CreateCommand();
-            command.CommandText = "INSERT INTO UHEM.UHEM_SALT (ID_LOGIN_INFO, SALT) VALUES (@id, @salt);";
-            command.Parameters.AddWithValue("@id", id);
-            command.Parameters.AddWithValue("@salt", salt.ToString());
-
-            var res = await command.ExecuteReaderAsync();
-
-            var hash = Rfc2898DeriveBytes.Pbkdf2(
-                Encoding.UTF8.GetBytes(password),
-                salt,
-                iterations,
-                hashAlgorithm,
-                keySize);
-            return Convert.ToHexString(hash);
-
-            await c.CloseAsync();
-        }
+        
 
     }
 }
