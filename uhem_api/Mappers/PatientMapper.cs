@@ -24,7 +24,8 @@ namespace uhem_api.Mappers
                     Name = data.GetString("name"),
                     Phone = data.GetString("phone"),
                     Sns = data.GetString("sns"),
-                    ZipCode = data.GetString("zipcode")
+                    ZipCode = data.GetString("zipcode"),
+                    BirthDate = data.GetString("birth_date")
                 };
 
                 l.Add(t);
@@ -47,6 +48,7 @@ namespace uhem_api.Mappers
                 t.Phone = data.GetString("phone");
                 t.Sns = data.GetString("sns");
                 t.ZipCode = data.GetString("zipcode");
+                t.BirthDate = data.GetString("birth_date");
             }
 
             return t;

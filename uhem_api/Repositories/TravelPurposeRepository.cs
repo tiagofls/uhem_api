@@ -17,12 +17,13 @@ namespace uhem_api.Repositories
             try
             {
 
-                await con.OpenAsync();
+                if (con.State.ToString().CompareTo("Closed") == 0) await con.OpenAsync();
 
                 var command = con.CreateCommand();
                 command.CommandText = "SELECT * FROM uhem.uhem_travel_purpose;";
 
                 var res = await command.ExecuteReaderAsync();
+
 
                 return TravelPurposeMapper.MapManyToTravelPurposeDto(res);
 
@@ -37,13 +38,14 @@ namespace uhem_api.Repositories
             try
             {
 
-                await con.OpenAsync();
+                if (con.State.ToString().CompareTo("Closed") == 0) await con.OpenAsync();
 
                 var command = con.CreateCommand();
                 command.CommandText = "SELECT * FROM uhem.uhem_travel_purpose WHERE id_travel_purpose = @id;";
                 command.Parameters.AddWithValue("@id", id);
 
                 var res = await command.ExecuteReaderAsync();
+
 
                 return TravelPurposeMapper.MapToTravelPurposeDto(res);
 

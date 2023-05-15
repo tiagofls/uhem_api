@@ -32,5 +32,19 @@ namespace uhem_api.Controllers
         {
             return await _loginInfoService.VerifyPassword(sns, password, flag);
         }
+
+        [HttpGet]
+        [Route("token")]
+        public async Task<string> GenerateToken(string sns, string username)
+        {
+            return await _loginInfoService.GenerateToken(sns, username);
+        }
+
+        [HttpGet]
+        [Route("verify_gen_ac")]
+        public async Task<bool> VerifyGenAccessCode(string token, string username)
+        {
+            return await _loginInfoService.VerifyGenAccessCode(token, username);
+        }
     }
 }

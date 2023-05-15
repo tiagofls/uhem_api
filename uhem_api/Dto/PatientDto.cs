@@ -13,6 +13,9 @@ namespace uhem_api.Dto
         [JsonPropertyName("sns")]
         public string Sns { get; set; }
 
+        [JsonPropertyName("birth_date")]
+        public string BirthDate { get; set; }
+
         [JsonPropertyName("email")]
         public string Email { get; set; }
 

@@ -24,6 +24,15 @@ builder.Services.AddScoped<ICaregiverRepository, CaregiverRepository>();
 builder.Services.AddScoped<ILoginInfoService, LoginInfoService>();
 builder.Services.AddScoped<ILoginInfoRepository, LoginInfoRepository>();
 
+builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+
+builder.Services.AddScoped<ITravelService, TravelService>();
+builder.Services.AddScoped<ITravelRepository, TravelRepository>();
+
+builder.Services.AddScoped<IHealthFacilityService, HealthFacilityService>();
+builder.Services.AddScoped<IHealthFacilityRepository, HealthFacilityRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
