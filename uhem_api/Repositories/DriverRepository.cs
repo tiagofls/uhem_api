@@ -17,7 +17,7 @@ namespace uhem_api.Repositories
                 await con.OpenAsync();
 
                 var command = con.CreateCommand();
-                command.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_driver WHERE id_driver = @id;";
+                command.CommandText = "SELECT * FROM uhem.uhem_driver WHERE id_driver = @id;";
                 command.Parameters.AddWithValue("@id", id);
 
                 var res = await command.ExecuteReaderAsync();

@@ -19,7 +19,7 @@ namespace uhem_api.Repositories
                 DateTime d = DateTime.Now;
 
                 var command = con.CreateCommand();
-                command.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_travel WHERE date_travel >= @d AND id_patient IN (SELECT id_patient FROM uhem_patient WHERE sns = @sns) ORDER BY date_travel ASC;";
+                command.CommandText = "SELECT * FROM uhem.uhem_travel WHERE date_travel >= @d AND id_patient IN (SELECT id_patient FROM uhem_patient WHERE sns = @sns) ORDER BY date_travel ASC;";
                 command.Parameters.AddWithValue("@sns", sns);
                 command.Parameters.AddWithValue("@d", d);
 
@@ -41,7 +41,7 @@ namespace uhem_api.Repositories
                 await con.OpenAsync();
 
                 var command = con.CreateCommand();
-                command.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_travel WHERE date_travel < CURRENT_TIMESTAMP AND id_patient IN (SELECT id_patient FROM uhem_patient WHERE sns = @sns) ORDER BY date_travel ASC;";
+                command.CommandText = "SELECT * FROM uhem.uhem_travel WHERE date_travel < CURRENT_TIMESTAMP AND id_patient IN (SELECT id_patient FROM uhem_patient WHERE sns = @sns) ORDER BY date_travel ASC;";
                 command.Parameters.AddWithValue("@sns", sns);
 
                 var res = await command.ExecuteReaderAsync();

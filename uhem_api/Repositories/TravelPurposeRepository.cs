@@ -20,7 +20,7 @@ namespace uhem_api.Repositories
                 if (con.State.ToString().CompareTo("Closed") == 0) await con.OpenAsync();
 
                 var command = con.CreateCommand();
-                command.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_travel_purpose;";
+                command.CommandText = "SELECT * FROM uhem.uhem_travel_purpose;";
 
                 var res = await command.ExecuteReaderAsync();
 
@@ -41,7 +41,7 @@ namespace uhem_api.Repositories
                 if (con.State.ToString().CompareTo("Closed") == 0) await con.OpenAsync();
 
                 var command = con.CreateCommand();
-                command.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_travel_purpose WHERE id_travel_purpose = @id;";
+                command.CommandText = "SELECT * FROM uhem.uhem_travel_purpose WHERE id_travel_purpose = @id;";
                 command.Parameters.AddWithValue("@id", id);
 
                 var res = await command.ExecuteReaderAsync();
@@ -64,7 +64,7 @@ namespace uhem_api.Repositories
                 if (con.State.ToString().CompareTo("Closed") == 0) await con.OpenAsync();
 
                 var command = con.CreateCommand();
-                command.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_travel_purpose WHERE id_travel_purpose = @id;";
+                command.CommandText = "SELECT * FROM uhem.uhem_travel_purpose WHERE id_travel_purpose = @id;";
                 command.Parameters.AddWithValue("@id", id);
 
                 var res = await command.ExecuteReaderAsync();
@@ -88,7 +88,7 @@ namespace uhem_api.Repositories
                 await con.OpenAsync();
 
                 var command = con.CreateCommand();
-                command.CommandText = "INSERT INTO db_a9a414_uhemapiUHEM_TRAVEL_PURPOSE (description) VALUES (@desc);";
+                command.CommandText = "INSERT INTO uhem.UHEM_TRAVEL_PURPOSE (description) VALUES (@desc);";
                 command.Parameters.AddWithValue("@desc", desc);
 
                 var res = await command.ExecuteReaderAsync();
@@ -109,7 +109,7 @@ namespace uhem_api.Repositories
                 await con.OpenAsync();
 
                 var command = con.CreateCommand();
-                command.CommandText = "DELETE FROM db_a9a414_uhemapiUHEM_TRAVEL_PURPOSE WHERE id_travel_purpose = @id;";
+                command.CommandText = "DELETE FROM uhem.UHEM_TRAVEL_PURPOSE WHERE id_travel_purpose = @id;";
                 command.Parameters.AddWithValue("@id", id);
 
                 var res = await command.ExecuteReaderAsync();
