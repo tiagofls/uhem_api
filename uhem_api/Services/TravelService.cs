@@ -60,6 +60,45 @@ namespace uhem_api.Services
             }
         }
 
+        public async Task<List<TravelV2Dto>> GetPreviousFromSns(string sns)
+        {
+            try
+            {
+                using (MySqlConnection con = SQLConnection.Connect())
+                {
+                    var resList = new List<TravelV2Dto>();
+
+                    var travel = await _travelRepository.GetPreviousFromSns(con, sns);
+                    con.CloseAsync();
+
+                    foreach (var t in travel)
+                    {
+                        var hFacility = await _hFacilityRepository.GetHealthFacilityById(con, (int)t.IdFacility);
+                        con.CloseAsync();
+                        var purposeT = await _purposeRepository.GetById(con, (int)t.IdTravelPurpose);
+                        con.CloseAsync();
+
+                        var tV2 = new TravelV2Dto
+                        {
+                            Date = t.DateTravel,
+                            Duration = t.Duration.ToString(),
+                            Facility = hFacility.Name,
+                            Purpose = purposeT.Description,
+                            Start = GetDatePart(t.DateTravel, 1),
+                        };
+
+                        resList.Add(tV2);
+                    }
+
+                    return resList;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
+
         private string GetDatePart(string date, int part)
         {
             string inputString = "2023-05-15 21:57:46";

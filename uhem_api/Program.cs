@@ -33,6 +33,12 @@ builder.Services.AddScoped<ITravelRepository, TravelRepository>();
 builder.Services.AddScoped<IHealthFacilityService, HealthFacilityService>();
 builder.Services.AddScoped<IHealthFacilityRepository, HealthFacilityRepository>();
 
+builder.Services.AddScoped<IDriverService, DriverService>();
+builder.Services.AddScoped<IDriverRepository, DriverRepository>();
+
+builder.Services.AddScoped<ITransportCompanyService, TransportCompanyService>();
+builder.Services.AddScoped<ITransportCompanyRepository, TransportCompanyRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

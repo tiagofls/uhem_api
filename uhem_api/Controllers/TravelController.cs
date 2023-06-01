@@ -22,5 +22,12 @@ namespace uhem_api.Controllers
         {
             return await _travelService.GetNextFromSns(sns);
         }
+
+        [HttpGet]
+        [Route("previous")]
+        public async Task<List<TravelV2Dto>> GetPreviousFromSns(string sns)
+        {
+            return await _travelService.GetPreviousFromSns(sns);
+        }
     }
 }

@@ -22,5 +22,11 @@ namespace uhem_api.Controllers
             return await _healthFacilityService.GetHealthFacilityById(id);
         }
 
+        [HttpGet]
+        [Route("name/id")]
+        public async Task<string> GetHealthFacilityNameById(int id)
+        {
+            return await _healthFacilityService.GetHealthFacilityNameById(id);
+        }
     }
 }

@@ -20,5 +20,11 @@ namespace uhem_api.Controllers
         {
             return await _patientService.GetBySns(sns);
         }
+
+        [HttpGet("id")]
+        public async Task<PatientDto> GetById(int id)
+        {
+            return await _patientService.GetById(id);
+        }
     }
 }

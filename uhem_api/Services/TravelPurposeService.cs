@@ -46,6 +46,22 @@ namespace uhem_api.Services
             }
         }
 
+        public async Task<string> GetNameById(int id)
+        {
+            try
+            {
+                using (MySqlConnection con = SQLConnection.Connect())
+                {
+                    var res = await _travelPurposeRepository.GetNameById(con, id);
+                    return res;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new System.Exception(e.ToString());
+            }
+        }
+
         public async Task<bool> Post(TravelPurposeDto data)
         {
             try

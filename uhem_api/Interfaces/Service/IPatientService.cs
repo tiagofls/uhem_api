@@ -5,5 +5,6 @@ namespace uhem_api.Interfaces.Service
     public interface IPatientService
     {
         Task<PatientDto> GetBySns(string sns);
+        Task<PatientDto> GetById(int id);
     }
 }

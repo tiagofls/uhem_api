@@ -6,5 +6,6 @@ namespace uhem_api.Interfaces.Repository
     public interface ITravelRepository
     {
         Task<List<TravelDto>> GetNextFromSns(MySqlConnection con, string sns);
+        Task<List<TravelDto>> GetPreviousFromSns(MySqlConnection con, string sns);
     }
 }

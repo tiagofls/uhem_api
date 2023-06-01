@@ -24,7 +24,7 @@ namespace uhem_api.Repositories
                 await con.OpenAsync();
 
                 var command = con.CreateCommand();
-                command.CommandText = "SELECT * FROM uhem.uhem_login_info;";
+                command.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_login_info;";
 
                 var res = await command.ExecuteReaderAsync();
 
@@ -99,7 +99,7 @@ namespace uhem_api.Repositories
                 await con.OpenAsync();
 
                 var command = con.CreateCommand();
-                command.CommandText = "SELECT * FROM uhem.uhem_token WHERE username = @username AND token = @token AND status = 'ONLINE';";
+                command.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_token WHERE username = @username AND token = @token AND status = 'ONLINE';";
                 command.Parameters.AddWithValue("@token", token);
                 command.Parameters.AddWithValue("@username", username);
 
@@ -114,7 +114,7 @@ namespace uhem_api.Repositories
                     await con.OpenAsync();
 
                     command = con.CreateCommand();
-                    command.CommandText = "SELECT * FROM uhem.uhem_patient WHERE sns = @username;";
+                    command.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_patient WHERE sns = @username;";
                     command.Parameters.AddWithValue("@username", username);
 
                     var resS = await command.ExecuteReaderAsync();
@@ -160,7 +160,7 @@ namespace uhem_api.Repositories
                     await con.OpenAsync();
 
                     command = con.CreateCommand();
-                    command.CommandText = "SELECT * FROM uhem.uhem_login_info WHERE username = @username;;";
+                    command.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_login_info WHERE username = @username;;";
                     command.Parameters.AddWithValue("@username", p.Email);
 
                     res = await command.ExecuteReaderAsync();
@@ -175,7 +175,7 @@ namespace uhem_api.Repositories
 
                     if (l.Username != null)
                     {
-                        command.CommandText = "DELETE FROM uhem.uhem_login_info WHERE username = @username;;";
+                        command.CommandText = "DELETE FROM db_a9a414_uhemapiuhem_login_info WHERE username = @username;;";
                         command.Parameters.AddWithValue("@username", p.Email);
 
                         res = await command.ExecuteReaderAsync();
@@ -205,7 +205,7 @@ namespace uhem_api.Repositories
                 string username;
 
                 var command42 = con.CreateCommand();
-                command42.CommandText = "SELECT * FROM uhem.uhem_patient WHERE sns = @sns;";
+                command42.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_patient WHERE sns = @sns;";
                 command42.Parameters.AddWithValue("@sns", sns);
 
                 var res42 = await command42.ExecuteReaderAsync();
@@ -218,7 +218,7 @@ namespace uhem_api.Repositories
                 await con.OpenAsync();
 
                 var command = con.CreateCommand();
-                command.CommandText = "SELECT * FROM uhem.uhem_login_info WHERE username = @user;";
+                command.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_login_info WHERE username = @user;";
                 command.Parameters.AddWithValue("@user", username);
 
                 var res = await command.ExecuteReaderAsync();
@@ -254,7 +254,7 @@ namespace uhem_api.Repositories
                 await con.OpenAsync();
 
                 var command42 = con.CreateCommand();
-                command42.CommandText = "SELECT * FROM uhem.uhem_patient WHERE sns = @sns;";
+                command42.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_patient WHERE sns = @sns;";
                 command42.Parameters.AddWithValue("@sns", sns);
 
                 var res42 = await command42.ExecuteReaderAsync();

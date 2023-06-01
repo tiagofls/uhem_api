@@ -16,12 +16,32 @@ namespace uhem_api.Repositories
                 if(con.State.ToString().CompareTo("Closed") == 0) await con.OpenAsync(); 
 
                 var command = con.CreateCommand();
-                command.CommandText = "SELECT * FROM uhem.uhem_health_facility WHERE id_facility = @id;";
+                command.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_health_facility WHERE id_facility = @id;";
                 command.Parameters.AddWithValue("@id", id);
 
                 var res = await command.ExecuteReaderAsync();
 
                 return HealthFacilityMapper.MapToHealthFacilityDto(res);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+        public async Task<string> GetHealthFacilityNameById(MySqlConnection con, int id)
+        {
+            try
+            {
+                if (con.State.ToString().CompareTo("Closed") == 0) await con.OpenAsync();
+
+                var command = con.CreateCommand();
+                command.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_health_facility WHERE id_facility = @id;";
+                command.Parameters.AddWithValue("@id", id);
+
+                var res = await command.ExecuteReaderAsync();
+
+                return HealthFacilityMapper.MapToHealthFacilityDto(res).Name;
             }
             catch (Exception e)
             {

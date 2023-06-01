@@ -31,6 +31,14 @@ namespace uhem_api.Controllers
             return res;
         }
 
+        [HttpGet]
+        [Route("name/id")]
+        public async Task<string> GetNameById(int id)
+        {
+            var res = await _travelPurposeService.GetNameById(id);
+            return res;
+        }
+
         [HttpPost]
         public async Task<bool> Post(TravelPurposeDto data)
         {

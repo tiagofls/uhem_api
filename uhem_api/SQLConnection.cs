@@ -13,11 +13,12 @@ namespace uhem_api
 
             builder = new MySqlConnectionStringBuilder
             {
-                Server = "localhost",
-                UserID = "root",
-                Password = "" /*".XfeJX0T8.GLINTT"*/,
-                Database = "uhem",
+                Server = "MYSQL6008.site4now.net",
+                UserID = "a9a414_uhemapi",
+                Password = "Tiagosantos1",
+                Database = "db_a9a414_uhemapi",
             };
+
 
             return con = new MySqlConnection(builder.ConnectionString);
         }

@@ -16,7 +16,7 @@ namespace uhem_api.Repositories
                 await con.OpenAsync();
 
                 var command = con.CreateCommand();
-                command.CommandText = "SELECT * FROM uhem.uhem_caregiver;";
+                command.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_caregiver;";
 
                 var res = await command.ExecuteReaderAsync();
 
@@ -35,7 +35,7 @@ namespace uhem_api.Repositories
                 await con.OpenAsync();
 
                 var command = con.CreateCommand();
-                command.CommandText = "SELECT * FROM uhem.uhem_caregiver WHERE id_caregiver = @id;";
+                command.CommandText = "SELECT * FROM db_a9a414_uhemapiuhem_caregiver WHERE id_caregiver = @id;";
                 command.Parameters.AddWithValue("@id", id);
 
                 var res = await command.ExecuteReaderAsync();

@@ -6,5 +6,6 @@ namespace uhem_api.Interfaces.Repositories
     public interface IHealthFacilityRepository
     {
         Task<HealthFacilityDto> GetHealthFacilityById(MySqlConnection con, int id);
+        Task<string> GetHealthFacilityNameById(MySqlConnection con, int id);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MySqlConnector;
+using System.Net;
 using uhem_api.Dto;
 using uhem_api.Interfaces.Repositories;
 using uhem_api.Interfaces.Service;
@@ -21,6 +22,14 @@ namespace uhem_api.Services
             using (MySqlConnection con = SQLConnection.Connect())
             {
                 return await _patientRepository.GetBySns(con, sns);
+            }
+        }
+
+        public async Task<PatientDto> GetById(int id)
+        {
+            using (MySqlConnection con = SQLConnection.Connect())
+            {
+                return await _patientRepository.GetById(con, id);
             }
         }
     }

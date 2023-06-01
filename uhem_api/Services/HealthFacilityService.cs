@@ -24,5 +24,14 @@ namespace uhem_api.Services
                 return res;
             }
         }
+
+        public async Task<string> GetHealthFacilityNameById(int id)
+        {
+            using (MySqlConnection con = SQLConnection.Connect())
+            {
+                var res = await _healthFacilityRepository.GetHealthFacilityNameById(con, id);
+                return res;
+            }
+        }
     }
 }
