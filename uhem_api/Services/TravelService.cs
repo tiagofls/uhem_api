@@ -1,4 +1,5 @@
 ﻿using MySqlConnector;
+using System.Net;
 using uhem_api.Dto;
 using uhem_api.Interfaces.Repositories;
 using uhem_api.Interfaces.Repository;
@@ -60,6 +61,23 @@ namespace uhem_api.Services
             }
         }
 
+        public async Task<List<AppointmentDto>> GetNextAppFromSns(string sns)
+        {
+            try
+            {
+                using (MySqlConnection con = SQLConnection.Connect())
+                {
+                    var resList = await _travelRepository.GetNextAppFromSns(con, sns);
+                    
+                    return resList;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
+
         public async Task<List<TravelV2Dto>> GetPreviousFromSns(string sns)
         {
             try
@@ -89,6 +107,40 @@ namespace uhem_api.Services
 
                         resList.Add(tV2);
                     }
+
+                    return resList;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
+
+        public async Task<List<AppointmentDto>> GetPreviousAppFromSns(string sns)
+        {
+            try
+            {
+                using (MySqlConnection con = SQLConnection.Connect())
+                {
+                    var resList = await _travelRepository.GetPreviousAppFromSns(con, sns);
+
+                    return resList;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
+
+        public async Task<bool> SetTravelCall(string id)
+        {
+            try
+            {
+                using (MySqlConnection con = SQLConnection.Connect())
+                {
+                    var resList = await _travelRepository.SetTravelCall(con, id);
 
                     return resList;
                 }

@@ -29,5 +29,26 @@ namespace uhem_api.Controllers
         {
             return await _travelService.GetPreviousFromSns(sns);
         }
+
+        [HttpGet]
+        [Route("appointments")]
+        public async Task<List<AppointmentDto>> GetNextAppFromSns(string sns)
+        {
+            return await _travelService.GetNextAppFromSns(sns);
+        }
+
+        [HttpGet]
+        [Route("previous-appointment")]
+        public async Task<List<AppointmentDto>> GetPreviousAppFromSns(string sns)
+        {
+            return await _travelService.GetPreviousAppFromSns(sns);
+        }
+
+        [HttpGet]
+        [Route("set-travel-call")]
+        public async Task<bool> SetTravelCall(string id)
+        {
+            return await _travelService.SetTravelCall(id);
+        }
     }
 }

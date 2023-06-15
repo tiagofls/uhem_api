@@ -1,4 +1,5 @@
 ﻿using MySqlConnector;
+using System.Net;
 using uhem_api.Dto;
 using uhem_api.Interfaces.Repository;
 using uhem_api.Mappers;
@@ -34,6 +35,54 @@ namespace uhem_api.Repositories
             }
         }
 
+        public async Task<List<AppointmentDto>> GetNextAppFromSns(MySqlConnection con, string sns)
+        {
+            try
+            {
+                await con.OpenAsync();
+
+                DateTime d = DateTime.Now;
+
+                var command = con.CreateCommand();
+                command.CommandText = "SELECT * FROM uhem.uhem_appointment WHERE appointment_date >= @d AND sns = @sns ORDER BY appointment_date ASC;";
+                command.Parameters.AddWithValue("@sns", sns);
+                command.Parameters.AddWithValue("@d", d);
+
+                var res = await command.ExecuteReaderAsync();
+
+
+                return AppointmentMapper.MapManyToAppointmentDto(res);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+        public async Task<List<AppointmentDto>> GetPreviousAppFromSns(MySqlConnection con, string sns)
+        {
+            try
+            {
+                await con.OpenAsync();
+
+                DateTime d = DateTime.Now;
+
+                var command = con.CreateCommand();
+                command.CommandText = "SELECT * FROM uhem.uhem_appointment WHERE appointment_date < @d AND sns = @sns ORDER BY appointment_date ASC;";
+                command.Parameters.AddWithValue("@sns", sns);
+                command.Parameters.AddWithValue("@d", d);
+
+                var res = await command.ExecuteReaderAsync();
+
+
+                return AppointmentMapper.MapManyToAppointmentDto(res);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
         public async Task<List<TravelDto>> GetPreviousFromSns(MySqlConnection con, string sns)
         {
             try
@@ -48,6 +97,27 @@ namespace uhem_api.Repositories
 
 
                 return TravelMapper.MapManyToTravelDto(res);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+        public async Task<bool> SetTravelCall(MySqlConnection con, string id)
+        {
+            try
+            {
+                await con.OpenAsync();
+
+                var command = con.CreateCommand();
+                command.CommandText = "UPDATE `uhem`.`uhem_appointment` SET `id_travel` = '-1' WHERE (`id_appointment` = @id);";
+                command.Parameters.AddWithValue("@id", id);
+
+                var res = await command.ExecuteReaderAsync();
+
+
+                return true;
             }
             catch (Exception e)
             {

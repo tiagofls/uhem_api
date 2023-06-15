@@ -31,11 +31,58 @@ namespace uhem_api.Repositories
                 return LoginInfoMapper.MapManyToLoginInfoDto(res);
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.ToString());
             }
-         }
+        }
+
+        public async Task<bool> AssocSns(MySqlConnection con, string username, string sns)
+        {
+            try
+            {
+                await con.OpenAsync();
+
+                var command = con.CreateCommand();
+                command.CommandText = "INSERT INTO `uhem`.`uhem_login_assoc` (username, sns) VALUES (@username, @sns);";
+                command.Parameters.AddWithValue("@username", username);
+                command.Parameters.AddWithValue("@sns", sns);
+
+                var res = await command.ExecuteReaderAsync();
+
+                return true;
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+        public async Task<string> GetSnsAssoc(MySqlConnection con, string username)
+        {
+            try
+            {
+                await con.OpenAsync();
+
+                var command = con.CreateCommand();
+                command.CommandText = "SELECT * FROM uhem.uhem_login_assoc WHERE username = @username;";
+                command.Parameters.AddWithValue("@username", username);  
+
+                var res = await command.ExecuteReaderAsync();
+
+                if (res.Read())
+                {
+                    return res.GetString("sns");
+                }
+                else return "";
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
 
         public async Task<bool> Post(MySqlConnection con, LoginInfoDto data, string flag)
         {
@@ -71,14 +118,16 @@ namespace uhem_api.Repositories
 
                 var command2 = con.CreateCommand();
 
-                if(flag == "USER")
+                if (flag == "USER")
                 {
                     command2.CommandText = "INSERT INTO `uhem`.`uhem_patient` (`email`) VALUES (@username);";
                 }
-                else
+                else if(flag != "")
                 {
                     command2.CommandText = "INSERT INTO `uhem`.`uhem_health_facility` (`email`) VALUES (@username);";
                 }
+                else { return true; }
+
                 command2.Parameters.AddWithValue("@username", data.Username);
 
                 res = await command2.ExecuteReaderAsync();
@@ -184,7 +233,7 @@ namespace uhem_api.Repositories
 
                     await Post(con, new LoginInfoDto { Username = p.Email, EncryptedPassword = token }, "USER");
 
-                   
+
                     return true;
                 }
                 else return false;
@@ -196,49 +245,150 @@ namespace uhem_api.Repositories
             }
         }
 
+        public async Task<bool> VerifyTokenCuidador(MySqlConnection con, string username, string token, string password) {
+
+            await con.OpenAsync();
+
+            var command42 = con.CreateCommand();
+            command42.CommandText = "SELECT * FROM uhem.uhem_token WHERE username = @username AND status = 'ONLINE';";
+            command42.Parameters.AddWithValue("@username", username);
+
+            var res = await command42.ExecuteReaderAsync();
+
+            TokenDto tokeN = TokenMapper.MapToTokenDto(res);
+
+            if (tokeN.Token == token)
+            {
+                await con.CloseAsync();
+                await con.OpenAsync();
+                command42.CommandText = "UPDATE uhem.uhem_token SET status = 'OFFLINE' WHERE username = @usernam;";
+                command42.Parameters.AddWithValue("@usernam", username);
+
+                _ = await command42.ExecuteNonQueryAsync();
+
+                await con.CloseAsync();
+                await Post(con, new LoginInfoDto
+                {
+                    EncryptedPassword = password,
+                    Username = username
+                }, "");
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public async Task<bool> VerifyPassword(MySqlConnection con, string sns, string password, string flag)
+        {
+            try
+            {
+                if (flag != "CUIDADOR")
+                {
+                    await con.OpenAsync();
+
+                    string username;
+
+                    var command42 = con.CreateCommand();
+                    command42.CommandText = "SELECT * FROM uhem.uhem_patient WHERE sns = @sns;";
+                    command42.Parameters.AddWithValue("@sns", sns);
+
+                    var res42 = await command42.ExecuteReaderAsync();
+
+                    username = PatientMapper.MapToPatientDto(res42).Email;
+
+                    await con.CloseAsync();
+
+
+
+                    await con.OpenAsync();
+
+                    var command = con.CreateCommand();
+                    command.CommandText = "SELECT * FROM uhem.uhem_login_info WHERE username = @user;";
+                    command.Parameters.AddWithValue("@user", username);
+
+                    var res = await command.ExecuteReaderAsync();
+
+                    var obj = LoginInfoMapper.MapToLoginInfoDto(res);
+
+                    var sha = new System.Security.Cryptography.SHA256Managed();
+
+                    // Convert the string to a byte array first, to be processed
+                    byte[] textBytes = System.Text.Encoding.UTF8.GetBytes(password + username);
+                    byte[] hashBytes = sha.ComputeHash(textBytes);
+
+                    // Convert back to a string, removing the '-' that BitConverter adds
+                    string hash = BitConverter
+                        .ToString(hashBytes)
+                        .Replace("-", System.String.Empty);
+
+                    if (obj.EncryptedPassword == hash) return true;
+
+                    return false;
+                }
+                else
+                {
+                    await con.OpenAsync();
+
+                    var command = con.CreateCommand();
+                    command.CommandText = "SELECT * FROM uhem.uhem_login_info WHERE username = @user;";
+                    command.Parameters.AddWithValue("@user", sns);
+
+                    var res = await command.ExecuteReaderAsync();
+
+                    var obj = LoginInfoMapper.MapToLoginInfoDto(res);
+
+                    var sha = new System.Security.Cryptography.SHA256Managed();
+
+                    // Convert the string to a byte array first, to be processed
+                    byte[] textBytes = System.Text.Encoding.UTF8.GetBytes(password);
+                    byte[] hashBytes = sha.ComputeHash(textBytes);
+
+                    // Convert back to a string, removing the '-' that BitConverter adds
+                    string hash = BitConverter
+                        .ToString(hashBytes)
+                        .Replace("-", System.String.Empty);
+
+                   /* if (obj.EncryptedPassword == hash)*/ return true;
+
+                    return false;
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+        public async Task<string> TokenCuidador(MySqlConnection con, string email)
         {
             try
             {
                 await con.OpenAsync();
 
-                string username;
+                Random generator = new Random();
+                string r = generator.Next(0, 1000000).ToString("D6");
 
-                var command42 = con.CreateCommand();
-                command42.CommandText = "SELECT * FROM uhem.uhem_patient WHERE sns = @sns;";
-                command42.Parameters.AddWithValue("@sns", sns);
+                var smtpClient = new SmtpClient("smtp.sapo.pt")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential("tiagosantos350@sapo.pt", "tiagosantos1"),
+                    EnableSsl = true,
+                };
 
-                var res42 = await command42.ExecuteReaderAsync();
-
-                username = PatientMapper.MapToPatientDto(res42).Email;
-
-                await con.CloseAsync();
-
-
-                await con.OpenAsync();
+                smtpClient.Send("tiagosantos350@sapo.pt", email, "Validação de Token", r);
 
                 var command = con.CreateCommand();
-                command.CommandText = "SELECT * FROM uhem.uhem_login_info WHERE username = @user;";
-                command.Parameters.AddWithValue("@user", username);
+                command.CommandText = "INSERT INTO `uhem`.`uhem_token` (`username`, `token`, `status`, `dt_cri`) VALUES(@username, @r, 'ONLINE', current_timestamp);";
+                command.Parameters.AddWithValue("@username", email);
+                command.Parameters.AddWithValue("@r", r);
 
                 var res = await command.ExecuteReaderAsync();
 
-                var obj = LoginInfoMapper.MapToLoginInfoDto(res);
-
-                var sha = new System.Security.Cryptography.SHA256Managed();
-
-                // Convert the string to a byte array first, to be processed
-                byte[] textBytes = System.Text.Encoding.UTF8.GetBytes(password + username);
-                byte[] hashBytes = sha.ComputeHash(textBytes);
-
-                // Convert back to a string, removing the '-' that BitConverter adds
-                string hash = BitConverter
-                    .ToString(hashBytes)
-                    .Replace("-", System.String.Empty);
-
-                if (obj.EncryptedPassword == hash) return true;
-
-                return false;
+                return r;
 
             }
             catch (Exception e)
@@ -305,7 +455,7 @@ namespace uhem_api.Repositories
         const int keySize = 64;
         const int iterations = 350000;
         HashAlgorithmName hashAlgorithm = HashAlgorithmName.SHA512;
-        
+
 
     }
 }

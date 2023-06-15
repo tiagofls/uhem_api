@@ -20,10 +20,24 @@ namespace uhem_api.Controllers
             return await _loginInfoService.GetAll();
         }
 
+        [HttpGet]
+        [Route("set-sns")]
+        public async Task<bool> AssocSns(string username, string sns)
+        {
+            return await _loginInfoService.AssocSns(username, sns);
+        }
+
         [HttpPost]
         public async Task<bool> Post(LoginInfoDto data, string flag)
         {
             return await _loginInfoService.Post(data, flag);
+        }
+
+        [HttpGet]
+        [Route("login-assoc")]
+        public async Task<string> GetSnsAssoc(string username)
+        {
+            return await _loginInfoService.GetSnsAssoc(username);
         }
 
         [HttpGet]
@@ -34,10 +48,24 @@ namespace uhem_api.Controllers
         }
 
         [HttpGet]
+        [Route("verify-token-cuidador")]
+        public async Task<bool> VerifyTokenCuidador(string username, string token, string password)
+        {
+            return await _loginInfoService.VerifyTokenCuidador(username, token, password);
+        }
+
+        [HttpGet]
         [Route("token")]
         public async Task<string> GenerateToken(string sns, string username)
         {
             return await _loginInfoService.GenerateToken(sns, username);
+        }
+
+        [HttpGet]
+        [Route("token-cuidador")]
+        public async Task<string> TokenCuidador(string email)
+        {
+            return await _loginInfoService.TokenCuidador(email); 
         }
 
         [HttpGet]
